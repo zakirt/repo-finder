@@ -1,0 +1,50 @@
+{
+  "name": "repo-finder",
+  "version": "1.0.0",
+  "description": "UI tool used to search GitHub for specified repos.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/zakirt/repo-finder.git"
+  },
+  "keywords": [
+    "repo",
+    "finder",
+    "github",
+    "search",
+    "github",
+    "search"
+  ],
+  "author": "Zakir Tariverdiev <zakir.tariverdiev@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zakirt/repo-finder/issues"
+  },
+  "homepage": "https://github.com/zakirt/repo-finder#readme",
+  "dependencies": {
+    "axios": "~0.19.2",
+    "react": "~16.12.0",
+    "react-dom": "~16.12.0"
+  },
+  "devDependencies": {
+    "@types/enzyme": "^3.10.4",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^24.9.1",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "@typescript-eslint/eslint-plugin": "^2.17.0",
+    "@typescript-eslint/parser": "^2.17.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "jest": "^25.1.0",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^6.2.1",
+    "tslint-microsoft-contrib": "^6.2.0",
+    "typescript": "^3.7.5",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
