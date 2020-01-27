@@ -32203,24 +32203,23 @@ module.exports = function (list, options) {
 
 /***/ }),
 
-/***/ "./src/components/Hello.tsx":
-/*!**********************************!*\
-  !*** ./src/components/Hello.tsx ***!
-  \**********************************/
+/***/ "./src/components/App.tsx":
+/*!********************************!*\
+  !*** ./src/components/App.tsx ***!
+  \********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 __webpack_require__(/*! ../scss/main.scss */ "./src/scss/main.scss");
-exports.Hello = (props) => React.createElement("h1", null,
-    "Hello from ",
-    props.compiler,
-    " and ",
-    props.framework,
-    "!");
+exports.App = () => (react_1.default.createElement("header", null,
+    react_1.default.createElement("h1", null, "New App")));
 
 
 /***/ }),
@@ -32234,11 +32233,21 @@ exports.Hello = (props) => React.createElement("h1", null,
 
 "use strict";
 
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-const ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-const Hello_1 = __webpack_require__(/*! ./components/Hello */ "./src/components/Hello.tsx");
-ReactDOM.render(React.createElement(Hello_1.Hello, { compiler: "TypeScript", framework: "React" }), document.getElementById('root'));
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const ReactDOM = __importStar(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
+const App_1 = __webpack_require__(/*! ./components/App */ "./src/components/App.tsx");
+ReactDOM.render(react_1.default.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
