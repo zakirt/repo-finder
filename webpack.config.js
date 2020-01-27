@@ -1,12 +1,25 @@
-module.exports = {
-    mode: 'production',
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackMd5Hash = require('webpack-md5-hash');
+const TerserJSPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+module.exports = (env, argv) => ({
+
+    mode: env.production ? 'production' : 'development',
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: 'source-map',
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ['.ts', '.tsx']
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+       // modules: ['src', 'node_modules']
+    },
+
+    output: {
+        // Only bust cache of the main.js file. Other files are used by manifest.json
+        filename: chunkData => (env.production && chunkData.chunk.name === 'main' ? '[name].[chunkhash].js' : '[name].js')
     },
 
     module: {
@@ -25,16 +38,62 @@ module.exports = {
                 enforce: 'pre',
                 test: /\.js$/,
                 loader: 'source-map-loader'
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        // options: {
+                        //     hmr: !!env.development, // only enable hot in development
+                        //     // if hmr does not work, this is a forceful method
+                        //     reloadAll: !!env.development
+                        // }
+                    },
+                    'css-loader',
+                    {
+                        loader: 'postcss-loader', // Run post css actions
+                        options: {
+                            plugins: () => [
+                                require('precss'),
+                                require('autoprefixer')
+                            ]
+                        }
+                    },
+                    'sass-loader' // compiles Sass to CSS
+                ]
             }
         ]
     },
 
-    // When importing a module whose path matches one of the following, just
-    // assume a corresponding global variable exists and use that instead.
-    // This is important because it allows us to avoid bundling all of our
-    // dependencies, which allows browsers to cache those libraries between builds.
-    externals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM'
+    plugins: [
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: env.production ? 'main.[contenthash].css' : 'main.css'
+        }),
+        new HtmlWebpackPlugin({
+            inject: false,
+            hash: true,
+            title: 'Repo Finder',
+            template: './index.html',
+            filename: 'index.html'
+        }),
+        new WebpackMd5Hash()
+    ],
+    // Optimization will only kick-in in 'production' mode
+    optimization: {
+        minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+        splitChunks: {
+            cacheGroups: {
+                styles: {
+                    name: 'main',
+                    test: /\.css$/,
+                    chunks: 'all',
+                    enforce: true
+                }
+            }
+        }
     }
-};
+});
