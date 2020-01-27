@@ -33,6 +33,37 @@ export class RepoSearch extends Component {
     componentDidMount() {
         // const results = this.repoSearchService.searchByquery();
         // results.then((res: any) => console.log(res));
+        this.setState({
+            totalRepos: 100,
+            repos: [{
+                id: 1,
+                name: 'test 1',
+                url: 'https://github.com',
+                description: 'test decription',
+                stars: 100,
+                license: 'MIT',
+                owner: 'tester22'
+            },
+            {
+                id: 1,
+                name: 'test 1',
+                url: 'https://github.com',
+                description: 'test decription',
+                stars: 100,
+                license: 'MIT',
+                owner: 'tester22'
+            },
+            {
+                id: 1,
+                name: 'test 1',
+                url: 'https://github.com',
+                description: 'test decription',
+                stars: 100,
+                license: 'MIT',
+                owner: 'tester22'
+            }],
+            isLoadingResults: false
+        });
     }
 
     onSubmitSearch() {
@@ -43,15 +74,16 @@ export class RepoSearch extends Component {
             fork: this.isForked
         });
         try {
-            const results = this.repoSearchService.searchByQuery(query);
-            this.setState({
-                isLoadingResults: true
-            });
-            results.then((data: any) => this.setState({
-                totalRepos: data.total,
-                repos: data.repos,
-                isLoadingResults: false
-            }));
+            // const results = this.repoSearchService.searchByQuery(query);
+            // this.setState({
+            //     isLoadingResults: true
+            // });
+            // results.then((data: any) => this.setState({
+            //     totalRepos: data.total,
+            //     repos: data.repos,
+            //     isLoadingResults: false
+            // }));
+
         } catch (e) {
             console.error(e);
         }
