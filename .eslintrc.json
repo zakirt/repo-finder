@@ -21,7 +21,9 @@
         "indent": ["error", 4],
         "comma-dangle": "off",
         "quote-props": "off",
-        "lines-between-class-members": "off"
+        "lines-between-class-members": "off",
+        "react/jsx-indent": [2, 4],
+        "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }]
     },
     "env": {
         "browser": true,

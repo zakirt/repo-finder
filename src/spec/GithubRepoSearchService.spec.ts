@@ -27,10 +27,4 @@ describe('GithubRepoSearchService', () => {
             expect(axiosMock.get).toHaveBeenCalledWith('search/repositories?q=tetris');
         });
     });
-
-    describe('findByStars', () => {
-        it('should be defined', () => {
-            expect(typeof githubRepoSearchService.findByStars).toBe('function');
-        });
-    });
 });

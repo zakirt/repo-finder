@@ -1,12 +1,10 @@
-'use strict';
-
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-module.exports = (env, argv) => ({
+module.exports = (env) => ({
 
     mode: env.production ? 'production' : 'development',
 
@@ -16,12 +14,11 @@ module.exports = (env, argv) => ({
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
-       // modules: ['src', 'node_modules']
     },
 
     output: {
         // Only bust cache of the main.js file. Other files are used by manifest.json
-        filename: chunkData => (env.production && chunkData.chunk.name === 'main' ? '[name].[chunkhash].js' : '[name].js')
+        filename: (chunkData) => (env.production && chunkData.chunk.name === 'main' ? '[name].[chunkhash].js' : '[name].js')
     },
 
     module: {
