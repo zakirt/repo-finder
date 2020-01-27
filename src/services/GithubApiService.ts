@@ -1,18 +1,13 @@
-import axios from 'axios';
+import { AxiosInstance } from 'axios';
+import { createGithubApiService } from './createGithubApiService';
 
 export class GithubApiService {
-    private apiUrl: string = 'https://api.github.com';
-    private apiHeaders = {
-        'Accept': 'application/vnd.github.mercy-preview+json'
-    };
+    private static apiInstance: AxiosInstance;
 
-    public get(uri: string) {
-        return axios.get(`${this.apiUrl}/${uri}`, {
-            headers: this.apiHeaders
-        });
-    }
-
-    public getApiUrl(): string {
-        return this.apiUrl;
+    public static getApiInstance(): AxiosInstance {
+        if (!GithubApiService.apiInstance) {
+            GithubApiService.apiInstance = createGithubApiService();
+        }
+        return GithubApiService.apiInstance;
     }
 }

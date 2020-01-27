@@ -1,18 +1,13 @@
-import axios from 'axios';
+import { GithubApiService } from './GithubApiService';
 
 export class GithubRepoSearchService {
-    private apiUrl: string = 'https://api.github.com/search/repositories';
-    private apiHeaders = {
-        'Accept': 'application/vnd.github.mercy-preview+json'
-    };
+    private apiService: any;
 
-    public searchRepos(query: string): void {
-        axios.get(`${this.apiUrl}?q=${query}`, {
-            headers: this.apiHeaders
-        });
+    constructor() {
+        this.apiService = GithubApiService.getApiInstance();
     }
 
-    public getApiUrl() {
-
+    public findRepoByQuery(query: string): any {
+        return this.apiService.get(`search/repositories?q=${query}`);
     }
 }
