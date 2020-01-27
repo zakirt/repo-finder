@@ -9,7 +9,7 @@ module.exports = (env) => ({
     mode: env.production ? 'production' : 'development',
 
     // Enable sourcemaps for debugging webpack's output.
-    devtool: 'source-map',
+    devtool: env.production ? 'source-map' : 'inline-cheap-module-source-map',
 
     entry: './src/index.tsx',
 

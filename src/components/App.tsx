@@ -1,8 +1,10 @@
 import React from 'react';
 import '../scss/main.scss';
+import { RepoSearch } from './RepoSearch';
 
 export const App = () => (
-    <header>
-        <h1>New App</h1>
-    </header>
+    <div className="container-fluid">
+        <header className="app-header"></header>
+        <RepoSearch />
+    </div>
 );

@@ -1,11 +1,22 @@
-p,
-h4,
-h5,
-h6 {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
+// --- Bootstrap --- //
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/badge";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/dropdown";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/list-group";
+@import "~bootstrap/scss/utilities/clearfix";
+@import "~bootstrap/scss/utilities/display";
+@import "~bootstrap/scss/utilities/spacing";
+@import "~bootstrap/scss/utilities/sizing";
 
-p {
-    line-height: 20px;
+.app-header {
+    background-color: $blue;
+    padding: 20px 10px;
 }
