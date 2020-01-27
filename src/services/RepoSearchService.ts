@@ -11,7 +11,7 @@ export class RepoSearchService {
 
     public async searchByQuery(query: string): any {
         try {
-            const result = this.apiService.get(`search/repositories?${query}`, {
+            const result = this.apiService.get(`search/repositories?q=${query}`, {
                 transformResponse: (data: any) => {
                     const res = JSON.parse(data);
                     const repos: RepoSearchResultModel[] = res.items.map((dto: any) => new RepoSearchResultAdapter(dto).toModel());

@@ -2,14 +2,14 @@ import { SearchQueryParts } from '../interfaces/SearchQueryParts';
 
 export function constructSearchQuery(queryParts: SearchQueryParts) {
     const {
-        q,
+        keywords,
         stars,
         license,
         fork
     } = queryParts;
-    let query = 'q=';
-    if (q) {
-        query += `${q}`;
+    let query = '';
+    if (keywords) {
+        query += `${keywords.join('+')}`;
     }
     if (stars) {
         query += `+stars:${stars}`;
@@ -21,7 +21,7 @@ export function constructSearchQuery(queryParts: SearchQueryParts) {
         query += '+fork:true';
     }
     // Get rid of preceding +
-    if (query[2] === '+') {
+    if (query[0] === '+') {
         query = query.replace('+', '');
     }
     return query;

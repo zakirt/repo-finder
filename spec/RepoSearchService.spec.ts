@@ -4,7 +4,9 @@ import { RepoSearchService } from '../src/services/RepoSearchService';
 describe('RepoSearchService', () => {
     let repoSearchService: RepoSearchService;
     const axiosMock = {
-        get: jest.fn()
+        get: jest.fn(() => ({
+            data: {}
+        }))
     };
 
     beforeEach(() => {
@@ -24,7 +26,7 @@ describe('RepoSearchService', () => {
         it('should call apiService.get method with GitHub search URI, and specified query', () => {
             repoSearchService.searchByQuery('tetris');
             expect(axiosMock.get).toHaveBeenCalledTimes(1);
-            expect(axiosMock.get).toHaveBeenCalledWith('search/repositories?q=tetris');
+            expect(axiosMock.get.mock.calls[0][0]).toBe('search/repositories?q=tetris');
         });
     });
 });

@@ -1,5 +1,5 @@
 export interface SearchQueryParts {
-    q?: string,
+    keywords?: string[],
     stars?: string,
     license?: string,
     fork?: boolean

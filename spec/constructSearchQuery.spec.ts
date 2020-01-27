@@ -7,28 +7,28 @@ describe('constructSearchQuery', () => {
         queryConstructTests = [
             {
                 input: {
-                    q: 'tetris',
+                    keywords: ['tetris', 'pacman'],
                     stars: '<10',
                     fork: true,
                     license: 'MIT'
                 },
-                result: 'q=tetris+stars:<10+license:MIT+fork:true'
+                result: 'tetris+pacman+stars:<10+license:MIT+fork:true'
             },
             {
                 input: {
                     stars: '2',
                     fork: true
                 },
-                result: 'q=stars:2+fork:true'
+                result: 'stars:2+fork:true'
             },
             {
                 input: {
-                    q: 'tetris',
+                    keywords: ['tetris'],
                     stars: '10..20',
                     fork: false,
                     license: 'MIT'
                 },
-                result: 'q=tetris+stars:10..20+license:MIT'
+                result: 'tetris+stars:10..20+license:MIT'
             }
         ];
     });
