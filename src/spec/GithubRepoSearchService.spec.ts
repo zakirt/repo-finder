@@ -16,15 +16,21 @@ describe('GithubRepoSearchService', () => {
         expect(GithubRepoSearchService).toBeDefined();
     });
 
-    describe('searchRepos', () => {
+    describe('findByQuery', () => {
         it('should be defined', () => {
-            expect(typeof githubRepoSearchService.findRepoByQuery).toBe('function');
+            expect(typeof githubRepoSearchService.findByQuery).toBe('function');
         });
 
         it('should call githubApiService.get method with GitHub search URI, and specified query', () => {
-            githubRepoSearchService.findRepoByQuery('tetris');
+            githubRepoSearchService.findByQuery('tetris');
             expect(axiosMock.get).toHaveBeenCalledTimes(1);
             expect(axiosMock.get).toHaveBeenCalledWith('search/repositories?q=tetris');
+        });
+    });
+
+    describe('findByStars', () => {
+        it('should be defined', () => {
+            expect(typeof githubRepoSearchService.findByStars).toBe('function');
         });
     });
 });

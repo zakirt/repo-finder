@@ -7,7 +7,11 @@ export class GithubRepoSearchService {
         this.apiService = GithubApiService.getApiInstance();
     }
 
-    public findRepoByQuery(query: string): any {
+    public findByQuery(query: string): any {
         return this.apiService.get(`search/repositories?q=${query}`);
+    }
+
+    public findByStars(query: string): any {
+
     }
 }
