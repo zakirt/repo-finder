@@ -18,11 +18,11 @@ describe('RepoSearchService', () => {
 
     describe('searchByQuery', () => {
         it('should be defined', () => {
-            expect(typeof repoSearchService.searchByquery).toBe('function');
+            expect(typeof repoSearchService.searchByQuery).toBe('function');
         });
 
         it('should call apiService.get method with GitHub search URI, and specified query', () => {
-            repoSearchService.searchByquery('tetris');
+            repoSearchService.searchByQuery('tetris');
             expect(axiosMock.get).toHaveBeenCalledTimes(1);
             expect(axiosMock.get).toHaveBeenCalledWith('search/repositories?q=tetris');
         });

@@ -1,4 +1,4 @@
-import { SearchQueryParts } from "../interfaces/SearchQueryParts";
+import { SearchQueryParts } from '../interfaces/SearchQueryParts';
 
 export function constructSearchQuery(queryParts: SearchQueryParts) {
     const {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Dropdown, Button } from 'react-bootstrap';
 import { RepoSearchService } from '../services/RepoSearchService';
 import { constructSearchQuery } from '../utils/constructSearchQuery';
+import { RepoSearchResults } from './RepoSearchResults';
 
 export class RepoSearch extends Component {
     private repoSearchService: RepoSearchService;
@@ -9,6 +10,10 @@ export class RepoSearch extends Component {
     private stars: string;
     private license: string;
     private isForked: boolean = false;
+    private state = {
+        totalRepos: 0,
+        repos: []
+    };
 
     constructor(props: any) {
         super(props);
@@ -17,9 +22,10 @@ export class RepoSearch extends Component {
     }
 
     componentDidMount() {
-        // const results = this.repoSearchService.searchByquery('tetris');
+        // const results = this.repoSearchService.searchByquery();
         // results.then((res: any) => console.log(res));
     }
+
     onSubmitSearch() {
         const query: string = constructSearchQuery({
             q: this.queryText,
@@ -27,10 +33,19 @@ export class RepoSearch extends Component {
             license: this.license,
             fork: this.isForked
         });
-        console.log(query);
+        try {
+            const results = this.repoSearchService.searchByQuery(query);
+            results.then((data: any) => this.setState({
+                totalRepos: data.total,
+                repos: data.repos
+            }));
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     render() {
+        const { repos, totalRepos } = this.state;
         return (
             <form>
                 <h1>Even Financial GitHub Repository Search</h1>
@@ -65,6 +80,8 @@ export class RepoSearch extends Component {
                 <div className="form-group">
                     <Button type="button" onClick={this.onSubmitSearch}>Search</Button>
                 </div>
+                <h3>Search results</h3>
+                <RepoSearchResults repos={repos} />
             </form>
         );
     }
