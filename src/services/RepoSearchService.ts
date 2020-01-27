@@ -8,7 +8,7 @@ export class RepoSearchService {
     }
 
     public searchByquery(query: string): any {
-        return this.apiService.get(`search/repositories?q=${query}`);
-        //return [];
+        //return this.apiService.get(`search/repositories?q=${query}`);
+        return [];
     }
 }
