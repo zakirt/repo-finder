@@ -7,7 +7,8 @@ import { RepoSearchResultModel } from '../models/RepoSearchResultModel';
 
 interface RepoSearchState {
     totalRepos: number,
-    repos: RepoSearchResultModel[]
+    repos: RepoSearchResultModel[],
+    isLoadingResults: boolean
 }
 
 export class RepoSearch extends Component {
@@ -24,7 +25,8 @@ export class RepoSearch extends Component {
         this.repoSearchService = new RepoSearchService();
         this.state = {
             totalRepos: 0,
-            repos: []
+            repos: [],
+            isLoadingResults: false
         };
     }
 
@@ -42,9 +44,13 @@ export class RepoSearch extends Component {
         });
         try {
             const results = this.repoSearchService.searchByQuery(query);
+            this.setState({
+                isLoadingResults: true
+            });
             results.then((data: any) => this.setState({
                 totalRepos: data.total,
-                repos: data.repos
+                repos: data.repos,
+                isLoadingResults: false
             }));
         } catch (e) {
             console.error(e);
@@ -52,7 +58,7 @@ export class RepoSearch extends Component {
     }
 
     render() {
-        const { repos, totalRepos } = this.state;
+        const { repos, totalRepos, isLoadingResults } = this.state;
         return (
             <form>
                 <h1>Even Financial GitHub Repository Search</h1>
@@ -85,7 +91,7 @@ export class RepoSearch extends Component {
                     <input type="checkbox" className="form-control" onChange={(ev) => { this.isForked = ev.target.checked; }} />
                 </div>
                 <div className="form-group">
-                    <Button type="button" onClick={this.onSubmitSearch}>Search</Button>
+                    <Button type="button" onClick={this.onSubmitSearch} disabled={isLoadingResults}>Search</Button>
                 </div>
                 <h3>Search results</h3>
                 <RepoSearchResults repos={repos} total={totalRepos} />
