@@ -3,6 +3,12 @@ import { Dropdown, Button } from 'react-bootstrap';
 import { RepoSearchService } from '../services/RepoSearchService';
 import { constructSearchQuery } from '../utils/constructSearchQuery';
 import { RepoSearchResults } from './RepoSearchResults';
+import { RepoSearchResultModel } from '../models/RepoSearchResultModel';
+
+interface RepoSearchState {
+    totalRepos: number,
+    repos: RepoSearchResultModel[]
+}
 
 export class RepoSearch extends Component {
     private repoSearchService: RepoSearchService;
@@ -10,15 +16,16 @@ export class RepoSearch extends Component {
     private stars: string;
     private license: string;
     private isForked: boolean = false;
-    private state = {
-        totalRepos: 0,
-        repos: []
-    };
+    public state: RepoSearchState;
 
     constructor(props: any) {
         super(props);
         this.onSubmitSearch = this.onSubmitSearch.bind(this);
         this.repoSearchService = new RepoSearchService();
+        this.state = {
+            totalRepos: 0,
+            repos: []
+        };
     }
 
     componentDidMount() {
@@ -28,7 +35,7 @@ export class RepoSearch extends Component {
 
     onSubmitSearch() {
         const query: string = constructSearchQuery({
-            q: this.queryText,
+            keywords: this.queryText.split(' '),
             stars: this.stars,
             license: this.license,
             fork: this.isForked
@@ -81,7 +88,7 @@ export class RepoSearch extends Component {
                     <Button type="button" onClick={this.onSubmitSearch}>Search</Button>
                 </div>
                 <h3>Search results</h3>
-                <RepoSearchResults repos={repos} />
+                <RepoSearchResults repos={repos} total={totalRepos} />
             </form>
         );
     }
