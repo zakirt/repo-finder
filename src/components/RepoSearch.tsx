@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
+import { Formik, Form as FormikForm, Field, ErrorMessage, FormikValues } from 'formik';
 import { Row, Col, Dropdown, Button, FormGroup, Form } from 'react-bootstrap';
 import { RepoSearchService } from '../services/RepoSearchService';
 import { constructSearchQuery } from '../utils/constructSearchQuery';
@@ -60,7 +60,7 @@ export class RepoSearch extends Component {
         });
     }
 
-    onSubmit(values, { setSubmitting }) {
+    onSubmit(values: FormikValues, { setSubmitting }: { setSubmitting: any }) {
         const { query, stars, fork } = values;
         const keywords = query.split(' ');
         const { license } = this.state as RepoSearchState;
