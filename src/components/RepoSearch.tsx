@@ -24,16 +24,8 @@ export class RepoSearch extends Component {
     }
 
     onSubmit(values: FormikValues, { setSubmitting }: { setSubmitting: any }) {
-        const { query, stars, fork } = values;
-        const keywords = query.split(' ');
-        const { license } = this.state as RepoSearchState;
-        const searchQuery: string = constructSearchQuery({
-            keywords,
-            stars,
-            license,
-            fork
-        });
         try {
+            const searchQuery: string = this.createSearchQuery(values);
             const results = this.repoSearchService.searchByQuery(searchQuery);
             this.setState({
                 isLoadingResults: true
@@ -47,6 +39,19 @@ export class RepoSearch extends Component {
         } catch (e) {
             console.error(e);
         }
+    }
+
+    private createSearchQuery(values: FormikValues): string {
+        const { query, stars, fork } = values;
+        const keywords = query.split(' ');
+        const { license } = this.state as RepoSearchState;
+        const searchQuery: string = constructSearchQuery({
+            keywords,
+            stars,
+            license,
+            fork
+        });
+        return searchQuery;
     }
 
     render() {
