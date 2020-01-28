@@ -7,6 +7,7 @@ import { RepoSearchResults } from './RepoSearchResults';
 import { RepoSearchResultModel } from '../models/RepoSearchResultModel';
 import { repoSearchValidationRules } from '../validations/repoSearchValidationRules';
 import { RepoSearchState } from '../interfaces/RepoSearchState';
+import { FormError } from './FormError';
 
 interface FormErrors {
     [key: string]: string
@@ -101,15 +102,6 @@ export class RepoSearch extends Component {
                     }, 400);
                 }}
                 validationSchema={repoSearchValidationRules}
-                // validate={(values) => {
-                //     const errors: FormErrors = {};
-                //     if (!values.query) {
-                //         errors.query = 'Required';
-                //     } else if (!/^[a-z0-9\s]+$/i.test(values.query)) {
-                //         errors.query = 'Alpha-numeric characters and spaces only';
-                //     }
-                //     return errors;
-                // }}
             >
                 {({ isSubmitting }) => (
                     <FormikForm>
@@ -121,7 +113,7 @@ export class RepoSearch extends Component {
                                         <Form.Group>
                                             <Form.Label htmlFor="query">Text</Form.Label>
                                             <Field id="query" name="query" type="text" className="form-control" />
-                                            <ErrorMessage name="query" component="div" />
+                                            <ErrorMessage name="query" component={FormError} />
                                         </Form.Group>
                                     </Col>
                                     <Col>
