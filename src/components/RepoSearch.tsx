@@ -1,4 +1,4 @@
-import React, { Component, FormEvent } from 'react';
+import React, { Component } from 'react';
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import { Row, Col, Dropdown, Button, FormGroup, Form } from 'react-bootstrap';
 import { RepoSearchService } from '../services/RepoSearchService';
@@ -9,24 +9,17 @@ import { repoSearchValidationRules } from '../validations/repoSearchValidationRu
 import { RepoSearchState } from '../interfaces/RepoSearchState';
 import { FormError } from './FormError';
 
-interface FormErrors {
-    [key: string]: string
-}
-
 export class RepoSearch extends Component {
     private repoSearchService: RepoSearchService;
-    private queryText: string;
-    private stars: string;
-    private license: string;
-    private isForked: boolean = false;
 
     constructor(props: any) {
         super(props);
-        this.onSubmitSearch = this.onSubmitSearch.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
         this.repoSearchService = new RepoSearchService();
         this.state = {
             totalRepos: 0,
             repos: [],
+            license: '',
             isLoadingResults: false
         };
     }
@@ -67,7 +60,19 @@ export class RepoSearch extends Component {
         });
     }
 
-    onSubmitSearch() {
+    onSubmit(values, { setSubmitting }) {
+        const { query, stars, fork } = values;
+        const keywords = query.split(' ');
+        const { license } = this.state as RepoSearchState;
+        const searchQuery: string = constructSearchQuery({
+            keywords,
+            stars,
+            license,
+            fork
+        });
+        console.log(searchQuery);
+        setSubmitting(false);
+        // const { stars, license, fork }
         // const query: string = constructSearchQuery({
         //     keywords: this.queryText.split(' '),
         //     stars: this.stars,
@@ -91,16 +96,16 @@ export class RepoSearch extends Component {
     }
 
     render() {
-        const { repos, totalRepos, isLoadingResults } = this.state as RepoSearchState;
+        const {
+            repos,
+            totalRepos,
+            license,
+            isLoadingResults
+        } = this.state as RepoSearchState;
         return (
             <Formik
-                initialValues={{ query: '', stars: '' }}
-                onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
-                        setSubmitting(false);
-                    }, 400);
-                }}
+                initialValues={{ query: '', stars: '', fork: false }}
+                onSubmit={this.onSubmit}
                 validationSchema={repoSearchValidationRules}
                 initialErrors={{ query: '' }}
             >
@@ -133,12 +138,12 @@ export class RepoSearch extends Component {
                                 <Row>
                                     <Col>
                                         <Form.Group>
-                                            <label htmlFor="license">license</label>
-                                            <Dropdown id="license" onSelect={(license: string) => { this.license = license; }}>
+                                            <Dropdown id="license" onSelect={(repoLicense: string) => this.setState({ license: repoLicense })}>
                                                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                                    License
+                                                    {license || 'Select License'}
                                                 </Dropdown.Toggle>
                                                 <Dropdown.Menu>
+                                                    <Dropdown.Item eventKey="">None</Dropdown.Item>
                                                     <Dropdown.Item eventKey="MIT">MIT</Dropdown.Item>
                                                     <Dropdown.Item eventKey="ISC">ISC</Dropdown.Item>
                                                     <Dropdown.Item eventKey="Apache">Apache</Dropdown.Item>
@@ -149,16 +154,14 @@ export class RepoSearch extends Component {
                                     </Col>
                                     <Col>
                                         <Form.Group>
-                                            <Form.Label htmlFor="forked">
+                                            <Form.Label htmlFor="fork">
                                                 Include Forked
                                             </Form.Label>
-                                            <Form.Control
+                                            <Field
                                                 type="checkbox"
                                                 className="form-control"
-                                                onChange={(ev: FormEvent<HTMLInputElement>) => {
-                                                    const target = ev.target as HTMLInputElement;
-                                                    this.isForked = target.checked;
-                                                }}
+                                                id="fork"
+                                                name="fork"
                                             />
                                         </Form.Group>
                                     </Col>
@@ -170,7 +173,6 @@ export class RepoSearch extends Component {
                                                 className="btn-block w-25 mx-auto"
                                                 type="submit"
                                                 size="lg"
-                                                onClick={this.onSubmitSearch}
                                                 disabled={isSubmitting || isLoadingResults || !isValid}
                                             >
                                                 Search
@@ -180,7 +182,7 @@ export class RepoSearch extends Component {
                                 </Row>
                             </Col>
                         </Row>
-                        <div className="border-top my-3"></div>
+                        <hr className="border-top my-3" />
                         <h2 className="h3">Search results</h2>
                         <RepoSearchResults repos={repos} total={totalRepos} />
                     </FormikForm>
