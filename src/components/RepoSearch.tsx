@@ -12,13 +12,16 @@ interface RepoSearchState {
     isLoadingResults: boolean
 }
 
+interface FormErrors {
+    [key: string]: string
+}
+
 export class RepoSearch extends Component {
     private repoSearchService: RepoSearchService;
     private queryText: string;
     private stars: string;
     private license: string;
     private isForked: boolean = false;
-    public state: RepoSearchState;
 
     constructor(props: any) {
         super(props);
@@ -91,7 +94,7 @@ export class RepoSearch extends Component {
     }
 
     render() {
-        const { repos, totalRepos, isLoadingResults } = this.state;
+        const { repos, totalRepos, isLoadingResults } = this.state as RepoSearchState;
         return (
             <Formik
                 initialValues={{ query: '' }}
@@ -101,12 +104,12 @@ export class RepoSearch extends Component {
                         setSubmitting(false);
                     }, 400);
                 }}
-                validate={values => {
-                    const errors = {
-                        query: ''
-                    };
+                validate={(values) => {
+                    const errors: FormErrors = {};
                     if (!values.query) {
                         errors.query = 'Required';
+                    } else if (!/^[a-z0-9\s]+$/i.test(values.query)) {
+                        errors.query = 'Alpha-numeric characters and spaces only';
                     }
                     return errors;
                 }}
@@ -175,7 +178,15 @@ export class RepoSearch extends Component {
                                 <Row>
                                     <Col>
                                         <Form.Group>
-                                            <Button className="btn-block w-25 mx-auto" type="submit" size="lg" onClick={this.onSubmitSearch} disabled={isLoadingResults}>Search</Button>
+                                            <Button
+                                                className="btn-block w-25 mx-auto"
+                                                type="submit"
+                                                size="lg"
+                                                onClick={this.onSubmitSearch}
+                                                disabled={isSubmitting || isLoadingResults}
+                                            >
+                                                Search
+                                            </Button>
                                         </Form.Group>
                                     </Col>
                                 </Row>
