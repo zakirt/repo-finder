@@ -35,7 +35,8 @@
         "formik": "^2.1.2",
         "react": "~16.12.0",
         "react-bootstrap": "^1.0.0-beta.16",
-        "react-dom": "~16.12.0"
+        "react-dom": "~16.12.0",
+        "yup": "~0.28.0"
     },
     "devDependencies": {
         "@babel/core": "^7.8.3",
@@ -46,6 +47,7 @@
         "@types/jest": "^24.9.1",
         "@types/react": "^16.9.19",
         "@types/react-dom": "^16.9.5",
+        "@types/yup": "^0.26.28",
         "@typescript-eslint/eslint-plugin": "^2.17.0",
         "@typescript-eslint/eslint-plugin-tslint": "^2.17.0",
         "@typescript-eslint/parser": "^2.17.0",

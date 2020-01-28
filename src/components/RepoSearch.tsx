@@ -5,6 +5,7 @@ import { RepoSearchService } from '../services/RepoSearchService';
 import { constructSearchQuery } from '../utils/constructSearchQuery';
 import { RepoSearchResults } from './RepoSearchResults';
 import { RepoSearchResultModel } from '../models/RepoSearchResultModel';
+import { repoSearchValidationRules } from '../validations/repoSearchValidationRules';
 
 interface RepoSearchState {
     totalRepos: number,
@@ -104,15 +105,16 @@ export class RepoSearch extends Component {
                         setSubmitting(false);
                     }, 400);
                 }}
-                validate={(values) => {
-                    const errors: FormErrors = {};
-                    if (!values.query) {
-                        errors.query = 'Required';
-                    } else if (!/^[a-z0-9\s]+$/i.test(values.query)) {
-                        errors.query = 'Alpha-numeric characters and spaces only';
-                    }
-                    return errors;
-                }}
+                validationSchema={repoSearchValidationRules}
+                // validate={(values) => {
+                //     const errors: FormErrors = {};
+                //     if (!values.query) {
+                //         errors.query = 'Required';
+                //     } else if (!/^[a-z0-9\s]+$/i.test(values.query)) {
+                //         errors.query = 'Alpha-numeric characters and spaces only';
+                //     }
+                //     return errors;
+                // }}
             >
                 {({ isSubmitting }) => (
                     <FormikForm>
