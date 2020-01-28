@@ -23,21 +23,23 @@ export class RepoSearch extends Component {
         };
     }
 
-    onSubmit(values: FormikValues, { setSubmitting }: { setSubmitting: any }) {
+    async onSubmit(values: FormikValues, { setSubmitting }: { setSubmitting: any }) {
         try {
             const searchQuery: string = this.createSearchQuery(values);
-            const results = this.repoSearchService.searchByQuery(searchQuery);
             this.setState({
                 isLoadingResults: true
             });
-            results.then((data: any) => this.setState({
-                totalRepos: data.total,
-                repos: data.repos,
+            const results = await this.repoSearchService.searchByQuery(searchQuery);
+            const { total, repos } = results;
+            this.setState({
+                totalRepos: total,
+                repos,
                 isLoadingResults: false
-            }));
+            });
             setSubmitting(false);
         } catch (e) {
             console.error(e);
+            setSubmitting(false);
         }
     }
 

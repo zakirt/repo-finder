@@ -31,6 +31,10 @@ export class RepoSearchService {
             return data.data;
         } catch (e) {
             console.error(`RepoSearchService.searchByQuery(): ${e.message}`);
+            return {
+                total: 0,
+                repos: []
+            };
         }
     }
 }

@@ -5,6 +5,7 @@
     "main": "main.js",
     "scripts": {
         "build:dev": "npx webpack --env.development -w --display-error-details --progress --colors --config webpack.config.js",
+        "build:prod": "npx webpack --env.production --display-error-details --progress --colors --config webpack.config.js",
         "start": "http-server ./dist -p 9000",
         "test": "jest",
         "test:watch": "jest --watch",
