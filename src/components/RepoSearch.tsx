@@ -6,12 +6,7 @@ import { constructSearchQuery } from '../utils/constructSearchQuery';
 import { RepoSearchResults } from './RepoSearchResults';
 import { RepoSearchResultModel } from '../models/RepoSearchResultModel';
 import { repoSearchValidationRules } from '../validations/repoSearchValidationRules';
-
-interface RepoSearchState {
-    totalRepos: number,
-    repos: RepoSearchResultModel[],
-    isLoadingResults: boolean
-}
+import { RepoSearchState } from '../interfaces/RepoSearchState';
 
 interface FormErrors {
     [key: string]: string
