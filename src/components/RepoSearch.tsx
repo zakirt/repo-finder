@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Formik, Form as FormikForm, Field, ErrorMessage, FormikValues } from 'formik';
-import { Row, Col, Dropdown, Button, FormGroup, Form } from 'react-bootstrap';
+import { Row, Col, Dropdown, Button, Form } from 'react-bootstrap';
 import { RepoSearchService } from '../services/RepoSearchService';
 import { constructSearchQuery } from '../utils/constructSearchQuery';
 import { RepoSearchResults } from './RepoSearchResults';
-import { RepoSearchResultModel } from '../models/RepoSearchResultModel';
 import { repoSearchValidationRules } from '../validations/repoSearchValidationRules';
 import { RepoSearchState } from '../interfaces/RepoSearchState';
 import { FormError } from './FormError';
@@ -24,42 +23,6 @@ export class RepoSearch extends Component {
         };
     }
 
-    componentDidMount() {
-        // const results = this.repoSearchService.searchByquery();
-        // results.then((res: any) => console.log(res));
-        this.setState({
-            totalRepos: 100,
-            repos: [{
-                id: 1,
-                name: 'test 1',
-                url: 'https://github.com',
-                description: 'test decription',
-                stars: 100,
-                license: 'MIT',
-                owner: 'tester22'
-            },
-            {
-                id: 2,
-                name: 'test 1',
-                url: 'https://github.com',
-                description: 'test decription',
-                stars: 100,
-                license: 'MIT',
-                owner: 'tester22'
-            },
-            {
-                id: 3,
-                name: 'test 1',
-                url: 'https://github.com',
-                description: 'test decription',
-                stars: 100,
-                license: 'MIT',
-                owner: 'tester22'
-            }],
-            isLoadingResults: false
-        });
-    }
-
     onSubmit(values: FormikValues, { setSubmitting }: { setSubmitting: any }) {
         const { query, stars, fork } = values;
         const keywords = query.split(' ');
@@ -70,29 +33,20 @@ export class RepoSearch extends Component {
             license,
             fork
         });
-        console.log(searchQuery);
-        setSubmitting(false);
-        // const { stars, license, fork }
-        // const query: string = constructSearchQuery({
-        //     keywords: this.queryText.split(' '),
-        //     stars: this.stars,
-        //     license: this.license,
-        //     fork: this.isForked
-        // });
-        // try {
-        //     const results = this.repoSearchService.searchByQuery(query);
-        //     this.setState({
-        //         isLoadingResults: true
-        //     });
-        //     results.then((data: any) => this.setState({
-        //         totalRepos: data.total,
-        //         repos: data.repos,
-        //         isLoadingResults: false
-        //     }));
-
-        // } catch (e) {
-        //     console.error(e);
-        // }
+        try {
+            const results = this.repoSearchService.searchByQuery(searchQuery);
+            this.setState({
+                isLoadingResults: true
+            });
+            results.then((data: any) => this.setState({
+                totalRepos: data.total,
+                repos: data.repos,
+                isLoadingResults: false
+            }));
+            setSubmitting(false);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     render() {
