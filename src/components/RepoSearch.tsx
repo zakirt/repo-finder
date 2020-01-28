@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, FormEvent } from 'react';
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import { Row, Col, Dropdown, Button, FormGroup, Form } from 'react-bootstrap';
 import { RepoSearchService } from '../services/RepoSearchService';
@@ -102,12 +102,14 @@ export class RepoSearch extends Component {
                     }, 400);
                 }}
                 validate={values => {
-                    const errors = {};
+                    const errors = {
+                        query: ''
+                    };
                     if (!values.query) {
-                      errors.query = 'Required';
+                        errors.query = 'Required';
                     }
                     return errors;
-                  }}
+                }}
             >
                 {({ isSubmitting }) => (
                     <FormikForm>
@@ -125,7 +127,15 @@ export class RepoSearch extends Component {
                                     <Col>
                                         <Form.Group>
                                             <Form.Label htmlFor="stars">Stars</Form.Label>
-                                            <Form.Control id="stars" type="text" className="form-control" onChange={(ev) => { this.stars = ev.target.value; }} />
+                                            <Form.Control
+                                                id="stars"
+                                                type="text"
+                                                className="form-control"
+                                                onChange={(ev: FormEvent<HTMLInputElement>) => {
+                                                    const target = ev.target as HTMLInputElement;
+                                                    this.stars = target.value;
+                                                }}
+                                            />
                                         </Form.Group>
                                     </Col>
                                 </Row>
@@ -151,7 +161,14 @@ export class RepoSearch extends Component {
                                             <Form.Label htmlFor="forked">
                                                 Include Forked
                                             </Form.Label>
-                                            <Form.Control type="checkbox" className="form-control" onChange={(ev) => { this.isForked = ev.target.checked; }} />
+                                            <Form.Control
+                                                type="checkbox"
+                                                className="form-control"
+                                                onChange={(ev: FormEvent<HTMLInputElement>) => {
+                                                    const target = ev.target as HTMLInputElement;
+                                                    this.isForked = target.checked;
+                                                }}
+                                            />
                                         </Form.Group>
                                     </Col>
                                 </Row>
