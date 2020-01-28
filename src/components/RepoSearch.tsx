@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dropdown, Button } from 'react-bootstrap';
+import { Row, Col, Dropdown, Button, FormGroup, Form } from 'react-bootstrap';
 import { RepoSearchService } from '../services/RepoSearchService';
 import { constructSearchQuery } from '../utils/constructSearchQuery';
 import { RepoSearchResults } from './RepoSearchResults';
@@ -92,42 +92,63 @@ export class RepoSearch extends Component {
     render() {
         const { repos, totalRepos, isLoadingResults } = this.state;
         return (
-            <form>
+            <Form>
                 <h1>Even Financial GitHub Repository Search</h1>
-                <div className="form-group">
-                    <label htmlFor="query">Text</label>
-                    <input id="query" type="text" className="form-control" onChange={(ev) => { this.queryText = ev.target.value; }} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="stars">Stars</label>
-                    <input id="stars" type="text" className="form-control" onChange={(ev) => { this.stars = ev.target.value; }} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="license">license</label>
-                    <Dropdown id="license" onSelect={(license: string) => { this.license = license; }}>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            License
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item eventKey="MIT">MIT</Dropdown.Item>
-                            <Dropdown.Item eventKey="ISC">ISC</Dropdown.Item>
-                            <Dropdown.Item eventKey="Apache">Apache</Dropdown.Item>
-                            <Dropdown.Item eventKey="GPL">GPL</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="forked">
-                        Forked
-                    </label>
-                    <input type="checkbox" className="form-control" onChange={(ev) => { this.isForked = ev.target.checked; }} />
-                </div>
-                <div className="form-group">
-                    <Button type="button" onClick={this.onSubmitSearch} disabled={isLoadingResults}>Search</Button>
-                </div>
+                <Row>
+                    <Col sm={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }}>
+                        <Row>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label htmlFor="query">Text</Form.Label>
+                                    <Form.Control id="query" type="text" className="form-control" onChange={(ev) => { this.queryText = ev.target.value; }} />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label htmlFor="stars">Stars</Form.Label>
+                                    <Form.Control id="stars" type="text" className="form-control" onChange={(ev) => { this.stars = ev.target.value; }} />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group>
+                                    <label htmlFor="license">license</label>
+                                    <Dropdown id="license" onSelect={(license: string) => { this.license = license; }}>
+                                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                            License
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item eventKey="MIT">MIT</Dropdown.Item>
+                                            <Dropdown.Item eventKey="ISC">ISC</Dropdown.Item>
+                                            <Dropdown.Item eventKey="Apache">Apache</Dropdown.Item>
+                                            <Dropdown.Item eventKey="GPL">GPL</Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label htmlFor="forked">
+                                        Include Forked
+                                    </Form.Label>
+                                    <Form.Control type="checkbox" className="form-control" onChange={(ev) => { this.isForked = ev.target.checked; }} />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group>
+                                    <Button className="btn-block w-25 mx-auto" type="button" size="lg" onClick={this.onSubmitSearch} disabled={isLoadingResults}>Search</Button>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+                <div className="border-top my-3"></div>
                 <h3>Search results</h3>
                 <RepoSearchResults repos={repos} total={totalRepos} />
-            </form>
+            </Form>
         );
     }
 }
