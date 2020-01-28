@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import { Row, Col, Dropdown, Button, FormGroup, Form } from 'react-bootstrap';
 import { RepoSearchService } from '../services/RepoSearchService';
 import { constructSearchQuery } from '../utils/constructSearchQuery';
@@ -45,7 +46,7 @@ export class RepoSearch extends Component {
                 owner: 'tester22'
             },
             {
-                id: 1,
+                id: 2,
                 name: 'test 1',
                 url: 'https://github.com',
                 description: 'test decription',
@@ -54,7 +55,7 @@ export class RepoSearch extends Component {
                 owner: 'tester22'
             },
             {
-                id: 1,
+                id: 3,
                 name: 'test 1',
                 url: 'https://github.com',
                 description: 'test decription',
@@ -67,88 +68,108 @@ export class RepoSearch extends Component {
     }
 
     onSubmitSearch() {
-        const query: string = constructSearchQuery({
-            keywords: this.queryText.split(' '),
-            stars: this.stars,
-            license: this.license,
-            fork: this.isForked
-        });
-        try {
-            // const results = this.repoSearchService.searchByQuery(query);
-            // this.setState({
-            //     isLoadingResults: true
-            // });
-            // results.then((data: any) => this.setState({
-            //     totalRepos: data.total,
-            //     repos: data.repos,
-            //     isLoadingResults: false
-            // }));
+        // const query: string = constructSearchQuery({
+        //     keywords: this.queryText.split(' '),
+        //     stars: this.stars,
+        //     license: this.license,
+        //     fork: this.isForked
+        // });
+        // try {
+        //     const results = this.repoSearchService.searchByQuery(query);
+        //     this.setState({
+        //         isLoadingResults: true
+        //     });
+        //     results.then((data: any) => this.setState({
+        //         totalRepos: data.total,
+        //         repos: data.repos,
+        //         isLoadingResults: false
+        //     }));
 
-        } catch (e) {
-            console.error(e);
-        }
+        // } catch (e) {
+        //     console.error(e);
+        // }
     }
 
     render() {
         const { repos, totalRepos, isLoadingResults } = this.state;
         return (
-            <Form>
-                <h1>Even Financial GitHub Repository Search</h1>
-                <Row>
-                    <Col sm={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }}>
+            <Formik
+                initialValues={{ query: '' }}
+                onSubmit={(values, { setSubmitting }) => {
+                    setTimeout(() => {
+                        alert(JSON.stringify(values, null, 2));
+                        setSubmitting(false);
+                    }, 400);
+                }}
+                validate={values => {
+                    const errors = {};
+                    if (!values.query) {
+                      errors.query = 'Required';
+                    }
+                    return errors;
+                  }}
+            >
+                {({ isSubmitting }) => (
+                    <FormikForm>
+                        <h1 className="h2">Even Financial GitHub Repository Search</h1>
                         <Row>
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label htmlFor="query">Text</Form.Label>
-                                    <Form.Control id="query" type="text" className="form-control" onChange={(ev) => { this.queryText = ev.target.value; }} />
-                                </Form.Group>
-                            </Col>
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label htmlFor="stars">Stars</Form.Label>
-                                    <Form.Control id="stars" type="text" className="form-control" onChange={(ev) => { this.stars = ev.target.value; }} />
-                                </Form.Group>
+                            <Col sm={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }}>
+                                <Row>
+                                    <Col>
+                                        <Form.Group>
+                                            <Form.Label htmlFor="query">Text</Form.Label>
+                                            <Field id="query" name="query" type="text" className="form-control" />
+                                            <ErrorMessage name="query" component="div" />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group>
+                                            <Form.Label htmlFor="stars">Stars</Form.Label>
+                                            <Form.Control id="stars" type="text" className="form-control" onChange={(ev) => { this.stars = ev.target.value; }} />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Form.Group>
+                                            <label htmlFor="license">license</label>
+                                            <Dropdown id="license" onSelect={(license: string) => { this.license = license; }}>
+                                                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                                    License
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item eventKey="MIT">MIT</Dropdown.Item>
+                                                    <Dropdown.Item eventKey="ISC">ISC</Dropdown.Item>
+                                                    <Dropdown.Item eventKey="Apache">Apache</Dropdown.Item>
+                                                    <Dropdown.Item eventKey="GPL">GPL</Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group>
+                                            <Form.Label htmlFor="forked">
+                                                Include Forked
+                                            </Form.Label>
+                                            <Form.Control type="checkbox" className="form-control" onChange={(ev) => { this.isForked = ev.target.checked; }} />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Form.Group>
+                                            <Button className="btn-block w-25 mx-auto" type="submit" size="lg" onClick={this.onSubmitSearch} disabled={isLoadingResults}>Search</Button>
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
-                        <Row>
-                            <Col>
-                                <Form.Group>
-                                    <label htmlFor="license">license</label>
-                                    <Dropdown id="license" onSelect={(license: string) => { this.license = license; }}>
-                                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                            License
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item eventKey="MIT">MIT</Dropdown.Item>
-                                            <Dropdown.Item eventKey="ISC">ISC</Dropdown.Item>
-                                            <Dropdown.Item eventKey="Apache">Apache</Dropdown.Item>
-                                            <Dropdown.Item eventKey="GPL">GPL</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </Form.Group>
-                            </Col>
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label htmlFor="forked">
-                                        Include Forked
-                                    </Form.Label>
-                                    <Form.Control type="checkbox" className="form-control" onChange={(ev) => { this.isForked = ev.target.checked; }} />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Form.Group>
-                                    <Button className="btn-block w-25 mx-auto" type="button" size="lg" onClick={this.onSubmitSearch} disabled={isLoadingResults}>Search</Button>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-                <div className="border-top my-3"></div>
-                <h3>Search results</h3>
-                <RepoSearchResults repos={repos} total={totalRepos} />
-            </Form>
+                        <div className="border-top my-3"></div>
+                        <h2 className="h3">Search results</h2>
+                        <RepoSearchResults repos={repos} total={totalRepos} />
+                    </FormikForm>
+                )}
+            </Formik>
         );
     }
 }
