@@ -94,7 +94,7 @@ export class RepoSearch extends Component {
         const { repos, totalRepos, isLoadingResults } = this.state as RepoSearchState;
         return (
             <Formik
-                initialValues={{ query: '' }}
+                initialValues={{ query: '', stars: '' }}
                 onSubmit={(values, { setSubmitting }) => {
                     setTimeout(() => {
                         alert(JSON.stringify(values, null, 2));
@@ -102,8 +102,9 @@ export class RepoSearch extends Component {
                     }, 400);
                 }}
                 validationSchema={repoSearchValidationRules}
+                initialErrors={{ query: '' }}
             >
-                {({ isSubmitting }) => (
+                {({ isSubmitting, isValid }) => (
                     <FormikForm>
                         <h1 className="h2">Even Financial GitHub Repository Search</h1>
                         <Row>
@@ -119,15 +120,13 @@ export class RepoSearch extends Component {
                                     <Col>
                                         <Form.Group>
                                             <Form.Label htmlFor="stars">Stars</Form.Label>
-                                            <Form.Control
+                                            <Field
                                                 id="stars"
+                                                name="stars"
                                                 type="text"
                                                 className="form-control"
-                                                onChange={(ev: FormEvent<HTMLInputElement>) => {
-                                                    const target = ev.target as HTMLInputElement;
-                                                    this.stars = target.value;
-                                                }}
                                             />
+                                            <ErrorMessage name="stars" component={FormError} />
                                         </Form.Group>
                                     </Col>
                                 </Row>
@@ -172,7 +171,7 @@ export class RepoSearch extends Component {
                                                 type="submit"
                                                 size="lg"
                                                 onClick={this.onSubmitSearch}
-                                                disabled={isSubmitting || isLoadingResults}
+                                                disabled={isSubmitting || isLoadingResults || !isValid}
                                             >
                                                 Search
                                             </Button>
