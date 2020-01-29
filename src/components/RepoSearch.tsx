@@ -72,7 +72,7 @@ export class RepoSearch extends Component {
             >
                 {({ isSubmitting, isValid }) => (
                     <FormikForm>
-                        <h1 className="h2">Even Financial GitHub Repository Search</h1>
+                        <h1 className="h2">GitHub Repository Search</h1>
                         <Row>
                             <Col sm={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }}>
                                 <Row>
