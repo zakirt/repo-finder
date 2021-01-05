@@ -31,7 +31,7 @@
     },
     "homepage": "https://github.com/zakirt/repo-finder#readme",
     "dependencies": {
-        "axios": "~0.19.2",
+        "axios": "~0.21.1",
         "bootstrap": "4.3.1",
         "formik": "^2.1.2",
         "react": "~16.12.0",
